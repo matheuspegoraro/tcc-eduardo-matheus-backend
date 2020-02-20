@@ -6,7 +6,7 @@ const server = require('http').createServer(app);
 const io = require('socket.io')(server);
 const cors = require('cors');
 
-const port = 3333;
+const port = 3000;
 
 require('./database');
 
