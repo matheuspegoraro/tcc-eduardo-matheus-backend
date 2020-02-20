@@ -3,10 +3,14 @@ const fs = require('fs');
 
 const app = express();
 const server = require('http').createServer(app);
-const io = require('socket.io')(server);
 const cors = require('cors');
 
-const port = 3000;
+require('dotenv').config()
+
+//const io = require('socket.io')(server);
+//socket = io.listen(process.env.PORT);
+
+const port = process.env.DEV_PORT || process.env.PORT || 3000;
 
 require('./database');
 
@@ -19,4 +23,4 @@ fs.readdir(__dirname + '/routes', (err, routes) => {
     });
 });
 
-server.listen(port, () => console.log(`Listening on ${ port }`));
+server.listen(port, () => console.log(`Listening on ${ port } port`));
