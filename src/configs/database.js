@@ -23,10 +23,10 @@ module.exports = {
   },
   "production": {
       "use_env_variable": "DATABASE_URL",
-      dialect:  'postgres',
-      port:     match[4],
-      host:     match[3],
-      logging:  true,
+      dialect: 'postgres',
+      port: match[4],
+      host: match[3],
+      logging: true,
       database: 'dbadministrai',
       define: {
           timestamps: true,
