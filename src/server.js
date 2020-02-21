@@ -8,7 +8,7 @@ const cors = require('cors');
 //const io = require('socket.io')(server);
 //socket = io.listen(process.env.PORT);
 
-console.log(process.env);
+console.log(process.env.PORT);
 
 const port = process.env.PORT || 5000;
 
