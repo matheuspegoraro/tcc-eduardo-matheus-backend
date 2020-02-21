@@ -8,8 +8,9 @@ const cors = require('cors');
 //const io = require('socket.io')(server);
 //socket = io.listen(process.env.PORT);
 
-//const port = process.env.PORT || 5000;
-const port = 5000;
+console.log(process.env);
+
+const port = process.env.PORT || 5000;
 
 require('./database');
 
