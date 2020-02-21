@@ -1,14 +1,14 @@
 module.exports = {
   "development": {
-      dialect: 'postgres',
-      host: 'localhost',
-      username: 'postgres',
-      password: 'admin',
-      database: 'dbadministrai',
-      define: {
-          timestamps: true,
-          freezeTableName: true
-      },
+    dialect: 'postgres',
+    host: 'localhost',
+    username: 'postgres',
+    password: 'admin',
+    database: 'dbadministrai',
+    define: {
+        timestamps: true,
+        freezeTableName: true
+    },
   },
   "staging": {
     dialect: 'postgres',
