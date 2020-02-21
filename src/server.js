@@ -1,8 +1,6 @@
 const express = require('express');
 const fs = require('fs');
 
-//require('dotenv').config();
-
 const app = express();
 const server = require('http').createServer(app);
 const cors = require('cors');
