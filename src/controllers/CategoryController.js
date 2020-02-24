@@ -29,7 +29,10 @@ module.exports = {
     try {
       let categories = await Category.findAll({
         attributes: ['id', 'name', 'parentId', 'color', 'createdAt', 'updatedAt'],
-        where: { companyId }
+        where: { companyId },
+        order: [
+          ['id', 'ASC'],
+        ],
       });
 
       categories = listToTree(categories);
@@ -47,8 +50,8 @@ module.exports = {
     try {
       const categoryFind = await Category.findOne({ where: { name } });
 
-      if (categoryFind) 
-        return res.status(httpStatus.BAD_REQUEST).json({ error: 'Category already exists!' });
+      // if (categoryFind) 
+      //   return res.status(httpStatus.BAD_REQUEST).json({ error: 'Category already exists!' });
 
       const category = await Category.create({ companyId, parentId, name, color });
 
@@ -72,4 +75,43 @@ module.exports = {
       return res.status(httpStatus.BAD_REQUEST).json({ error: 'Problems requesting route!' });
     }
   }, 
+
+  async edit(req, res) {
+    const { companyId: companyId } = req;
+    const { categoryId } = req.params;
+    const { parentId, name, color } = req.body;
+
+    try {
+      const category = await Category.findByPk(categoryId);
+
+      if (category) {
+        category.update({
+          parentId, name, color
+        })
+        .then(() => {
+          res.status(httpStatus.OK).json(category);
+        })
+      }
+    } catch (error) {
+      return res.status(httpStatus.BAD_REQUEST).json({ error: 'Problems requesting route!' });
+    }
+  },
+
+  async delete(req, res) {
+    const { categoryId } = req.params;
+
+    try {
+      const category = await Category.findByPk(categoryId);
+
+      if (category) {
+        category.destroy()
+          .then(() => {
+            res.status(httpStatus.OK).json(category);
+          })
+      }
+    } catch (error) {
+      console.log(error);
+      return res.status(httpStatus.BAD_REQUEST).json({ error: 'Problems requesting route!' });
+    }
+  },
 };

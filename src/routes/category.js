@@ -11,5 +11,7 @@ const ADMINISTRATOR = 1;
 category.get('/categories', AuthMiddleware, CategoryController.list);
 category.get('/categories/:categoryId', AuthMiddleware, CategoryController.byId);
 category.post('/categories', AuthMiddleware, CategoryController.create);
+category.put('/categories/:categoryId', AuthMiddleware, CategoryController.edit);
+category.delete('/categories/:categoryId', AuthMiddleware, CategoryController.delete);
 
 module.exports = category;
