@@ -17,6 +17,7 @@ class Company extends Model {
     this.hasMany(models.Account, { foreignKey: 'companyId', as: 'accounts' });
     this.hasMany(models.Category, { foreignKey: 'companyId', as: 'categories' });
     this.hasMany(models.UploadOfx, { foreignKey: 'companyId', as: 'uploadOfx' });
+    this.hasMany(models.Bank, { foreignKey: 'companyId', as: 'banks' });
   }
 }
 
