@@ -10,6 +10,8 @@ const ADMINISTRATOR = 1;
 
 bank.get('/banks', AuthMiddleware, BankController.list);
 bank.get('/banks/:bankId', AuthMiddleware, BankController.byId);
-bank.post('/banks', AuthMiddleware, PermissionMiddleware(ADMINISTRATOR), BankController.create);
+bank.post('/banks', AuthMiddleware, BankController.create);
+bank.delete('/banks/:bankId', AuthMiddleware, BankController.delete);
+bank.put('/banks/:bankId', AuthMiddleware, BankController.edit);
 
 module.exports = bank;
