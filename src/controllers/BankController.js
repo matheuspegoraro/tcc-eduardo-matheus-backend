@@ -24,16 +24,12 @@ module.exports = {
 
   //lista todos os bancos padrões + bancos cadastrados pelos usuario.
   async listAll(req, res) {
-
     const { companyId } = req;
 
     try {
       const banks = await Bank.findAll({
-        attributes: ["id", "name", "imgPath", "createdAt"],
-        [Op.or]: [
-          { companyId },
-          { companyId: null }
-        ]
+        attributes: ["id", "name", "companyId", "imgPath", "createdAt"],
+        [Op.or]: [{ companyId }, { companyId: null }]
       });
 
       return res.status(httpStatus.OK).json(banks);
