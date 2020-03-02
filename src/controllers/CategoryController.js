@@ -39,7 +39,7 @@ module.exports = {
 
       return res.status(httpStatus.OK).json(categories);
     } catch (error) {
-      return res.status(httpStatus.BAD_REQUEST).json({ error: 'Problems requesting route!' });
+      return res.status(httpStatus.BAD_REQUEST).json({ error: 'Erro ao tentar buscar a lista de categorias! Por favor, tente mais tarde.' });
     }
   }, 
 
@@ -48,16 +48,11 @@ module.exports = {
     const { parentId, name, color } = req.body;
 
     try {
-      const categoryFind = await Category.findOne({ where: { name } });
-
-      // if (categoryFind) 
-      //   return res.status(httpStatus.BAD_REQUEST).json({ error: 'Category already exists!' });
-
       const category = await Category.create({ companyId, parentId, name, color });
 
       return res.status(httpStatus.OK).json(category);
     } catch (error) {
-      return res.status(httpStatus.BAD_REQUEST).json({ error: 'Problems requesting route!' });
+      return res.status(httpStatus.BAD_REQUEST).json({ error: 'Erro ao tentar cadastrar categoria! Por favor, tente mais tarde.' });
     }
   },
 
@@ -68,11 +63,11 @@ module.exports = {
       const category = await Category.findByPk(categoryId);
 
       if (!category) 
-        return res.status(httpStatus.BAD_REQUEST).json({ error: 'Category not found!' });
+        return res.status(httpStatus.BAD_REQUEST).json({ error: 'Erro ao tentar buscar categoria! Categoria não existente na base de dados.' });
 
       return res.json(category);
     } catch (error) {
-      return res.status(httpStatus.BAD_REQUEST).json({ error: 'Problems requesting route!' });
+      return res.status(httpStatus.BAD_REQUEST).json({ error: 'Erro ao tentar buscar categoria! Por favor, tente mais tarde.' });
     }
   }, 
 
@@ -91,9 +86,11 @@ module.exports = {
         .then(() => {
           res.status(httpStatus.OK).json(category);
         })
+      } else {
+        return res.status(httpStatus.BAD_REQUEST).json({ error: 'Erro ao tentar alterar a categoria! Categoria não existente na base de dados.' });
       }
     } catch (error) {
-      return res.status(httpStatus.BAD_REQUEST).json({ error: 'Problems requesting route!' });
+      return res.status(httpStatus.BAD_REQUEST).json({ error: 'Erro ao tentar alterar a categoria! Por favor, tente mais tarde.' });
     }
   },
 
@@ -108,10 +105,11 @@ module.exports = {
           .then(() => {
             res.status(httpStatus.OK).json(category);
           })
+      } else {
+        return res.status(httpStatus.BAD_REQUEST).json({ error: 'Erro ao tentar remover a categoria! Categoria não existente na base de dados.' });
       }
     } catch (error) {
-      console.log(error);
-      return res.status(httpStatus.BAD_REQUEST).json({ error: 'Problems requesting route!' });
+      return res.status(httpStatus.BAD_REQUEST).json({ error: 'Erro ao tentar remover a categoria! Por favor, tente mais tarde.' });
     }
   },
 };

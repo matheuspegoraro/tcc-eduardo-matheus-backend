@@ -11,5 +11,7 @@ const ADMINISTRATOR = 1;
 creditCard.get('/credit-cards', AuthMiddleware, CreditCardController.list);
 creditCard.get('/credit-cards/:creditCardId', AuthMiddleware, CreditCardController.byId);
 creditCard.post('/credit-cards', AuthMiddleware, PermissionMiddleware(ADMINISTRATOR), CreditCardController.create);
+creditCard.put('/credit-cards/:creditCardId', AuthMiddleware, CreditCardController.edit);
+creditCard.delete('/credit-cards/:creditCardId', AuthMiddleware, CreditCardController.delete);
 
 module.exports = creditCard;

@@ -19,12 +19,15 @@ module.exports = {
           as: 'bank',
           attributes: ['id', 'name', 'imgPath']
         }],
-        where: { companyId }
+        where: { companyId },
+        order: [
+          ['name', 'ASC'],
+        ],
       });
 
       return res.status(httpStatus.OK).json(creditCards);
     } catch (error) {
-      return res.status(httpStatus.BAD_REQUEST).json({ error: 'Problems requesting route!' });
+      return res.status(httpStatus.BAD_REQUEST).json({ error: 'Erro ao tentar buscar lista de cartões! Por favor, tente mais tarde.' });
     }
   }, 
 
@@ -36,13 +39,13 @@ module.exports = {
       const creditCardFind = await CreditCard.findOne({ where: { name } });
 
       if (creditCardFind) 
-        return res.status(httpStatus.BAD_REQUEST).json({ error: 'Credit card already exists!' });
+        return res.status(httpStatus.BAD_REQUEST).json({ error: 'Erro ao tentar cadastrar o cartão! Cartão já cadastro na base de dados.' });
 
       const creditCard = await CreditCard.create({ companyId, bankId, name, closingDay, deadlineDay, limit });
 
       return res.status(httpStatus.OK).json(creditCard);
     } catch (error) {
-      return res.status(httpStatus.BAD_REQUEST).json({ error: 'Problems requesting route!' });
+      return res.status(httpStatus.BAD_REQUEST).json({ error: 'Erro ao tentar cadastrar o cartão! Por favor, tente mais tarde.' });
     }
   },
 
@@ -62,11 +65,52 @@ module.exports = {
       });
 
       if (!creditCard) 
-        return res.status(httpStatus.BAD_REQUEST).json({ error: 'Credit card not found!' });
+        return res.status(httpStatus.BAD_REQUEST).json({ error: 'Erro ao tentar buscar cartão! Cartão não existente na base de dados.' });
 
       return res.json(creditCard);
     } catch (error) {
-      return res.status(httpStatus.BAD_REQUEST).json({ error: 'Problems requesting route!' });
+      return res.status(httpStatus.BAD_REQUEST).json({ error: 'Erro ao tentar buscar cartão! Por favor, tente mais tarde.' });
     }
   }, 
+
+  async edit(req, res) {
+    const { creditCardId } = req.params;
+    const { bankId, name, closingDay, deadlineDay, limit } = req.body;
+
+    try {
+      const creditCard = await CreditCard.findByPk(creditCardId);
+
+      if (creditCard) {
+        creditCard.update({
+          bankId, name, closingDay, deadlineDay, limit
+        })
+        .then(() => {
+          res.status(httpStatus.OK).json(creditCard);
+        })
+      } else {
+        return res.status(httpStatus.BAD_REQUEST).json({ error: 'Erro ao tentar alterar o cartão! Cartão não existente na base de dados.' });
+      }
+    } catch (error) {
+      return res.status(httpStatus.BAD_REQUEST).json({ error: 'Erro ao tentar alterar o cartão! Por favor, tente mais tarde.' });
+    }
+  },
+
+  async delete(req, res) {
+    const { creditCardId } = req.params;
+
+    try {
+      const creditCard = await CreditCard.findByPk(creditCardId);
+
+      if (creditCard) {
+        creditCard.destroy()
+          .then(() => {
+            res.status(httpStatus.OK).json(creditCard);
+          })
+      } else {
+        return res.status(httpStatus.BAD_REQUEST).json({ error: 'Erro ao tentar remover o cartão! Cartão não existente na base de dados.' });
+      }
+    } catch (error) {
+      return res.status(httpStatus.BAD_REQUEST).json({ error: 'Erro ao tentar remover o cartão! Por favor, tente mais tarde.' });
+    }
+  },
 };
