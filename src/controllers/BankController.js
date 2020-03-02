@@ -2,6 +2,7 @@ const Bank = require("../models/Bank");
 const fs = require("fs");
 const path = require("path");
 const httpStatus = require("http-status");
+const { Op } = require("sequelize");
 
 module.exports = {
   async listDefaults(req, res) {
@@ -21,13 +22,18 @@ module.exports = {
     }
   },
 
-  async list(req, res) {
+  //lista todos os bancos padrões + bancos cadastrados pelos usuario.
+  async listAll(req, res) {
+
+    const { companyId } = req;
+
     try {
       const banks = await Bank.findAll({
         attributes: ["id", "name", "imgPath", "createdAt"],
-        where: {
-          defaultBank: 0
-        }
+        [Op.or]: [
+          { companyId },
+          { companyId: null }
+        ]
       });
 
       return res.status(httpStatus.OK).json(banks);
@@ -38,6 +44,7 @@ module.exports = {
     }
   },
 
+  //somente para bancos criado pelo usuario.
   async create(req, res) {
     const { name, imgPath } = req.body;
     const { companyId } = req;
