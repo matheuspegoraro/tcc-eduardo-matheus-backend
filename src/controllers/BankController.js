@@ -106,24 +106,24 @@ module.exports = {
 
   async edit(req, res) {
     const { bankId } = req.params;
+    const { name, imgPath } = req.body;
 
     try {
-      const bank = await bank.findByPk(bankId);
+      const bank = await Bank.findByPk(bankId);
 
-      if (!bank)
-        return res
-          .status(httpStatus.BAD_REQUEST)
-          .json({ error: "Banco inexistente em nossa base de dados!" });
-
-      await bank.update({
-        name
-      });
-
-      return res.status(httpStatus.OK).json(bank);
+      if (bank) {
+        bank.update({
+          name
+        })
+        .then(() => {
+          res.status(httpStatus.OK).json(bank);
+        })
+      } else {
+        return res.status(httpStatus.BAD_REQUEST).json({ error: 'Erro ao tentar alterar o banco! Não encontramos na base de dados.' });
+      }
     } catch (error) {
-      return res
-        .status(httpStatus.BAD_REQUEST)
-        .json({ error: "Não foi possível editar o banco!" });
+      return res.status(httpStatus.BAD_REQUEST).json({ error: 'Erro ao tentar alterar o banco! Por favor, tente mais tarde.' });
     }
   }
+  
 };
