@@ -22,7 +22,7 @@ module.exports = {
         }, {
           model: BillType,
           as: 'billType',
-          attributes: ['id', 'name', 'icon']
+          attributes: ['id', 'name']
         }],
         where: { companyId }
       });
@@ -73,5 +73,53 @@ module.exports = {
     } catch (error) {
       return res.status(httpStatus.BAD_REQUEST).json({ error: 'Problems requesting route!' });
     }
-  }, 
+  },
+
+  async delete(req, res) {
+    const { billId } = req.params;
+
+    try {
+      const bill = await Bill.findByPk(billId);
+
+      if (!bill)
+        return res
+          .status(httpStatus.BAD_REQUEST)
+          .json({ error: "Conta inexistente em nossa base de dados!" });
+
+      await bill.destroy();
+
+      return res.status(httpStatus.OK).json(bill);
+    } catch (error) {
+      return res
+        .status(httpStatus.BAD_REQUEST)
+        .json({ error: "Não foi possível deletar a conta!" });
+    }
+  },
+
+  async edit(req, res) {
+    const { billId } = req.params;
+    const { bankId, billTypeId, name, currentValue } = req.body;
+
+    try {
+      const bill = await Bill.findByPk(billId);
+
+      if (!bill)
+        return res
+          .status(httpStatus.BAD_REQUEST)
+          .json({ error: "Conta inexistente em nossa base de dados!" });
+
+      await bill.update({
+        bankId, 
+        billTypeId, 
+        name, 
+        currentValue
+      });
+
+      return res.status(httpStatus.OK).json(bill);
+    } catch (error) {
+      return res
+        .status(httpStatus.BAD_REQUEST)
+        .json({ error: "Não foi possível editar a conta!" });
+    }
+  }
 };

@@ -11,5 +11,7 @@ const ADMINISTRATOR = 1;
 billType.get('/bill-types', AuthMiddleware, BillTypeController.list);
 billType.get('/bill-types/:billTypeId', AuthMiddleware, BillTypeController.byId);
 billType.post('/bill-types', AuthMiddleware, PermissionMiddleware(ADMINISTRATOR), BillTypeController.create);
+billType.put('/bill-types/:billTypeId', AuthMiddleware, BillTypeController.edit);
+billType.delete('/bill-types/:billTypeId', AuthMiddleware, BillTypeController.delete);
 
 module.exports = billType;

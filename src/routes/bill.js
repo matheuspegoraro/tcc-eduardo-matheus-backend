@@ -11,5 +11,7 @@ const ADMINISTRATOR = 1;
 bill.get('/bills', AuthMiddleware, BillController.list);
 bill.get('/bills/:billId', AuthMiddleware, BillController.byId);
 bill.post('/bills', AuthMiddleware, PermissionMiddleware(ADMINISTRATOR), BillController.create);
+bill.put('/bills/:billId', AuthMiddleware, BillController.edit);
+bill.delete('/bills/:billId', AuthMiddleware, BillController.delete);
 
 module.exports = bill;

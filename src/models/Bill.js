@@ -4,7 +4,7 @@ class Bill extends Model {
   static init(sequelize) {
     super.init({
       name: DataTypes.STRING,
-      current_value: DataTypes.REAL,
+      currentValue: DataTypes.REAL,
     }, {
       tableName: 'bills',
       sequelize
