@@ -1,16 +1,16 @@
 const express = require('express');
 
-const AccountController = require('../controllers/AccountController');
+const MovementController = require('../controllers/MovementController');
 const AuthMiddleware = require('../middlewares/auth');
 const PermissionMiddleware = require('../middlewares/permission');
 
-const account = express.Router();
+const movement = express.Router();
 
 const ADMINISTRATOR = 1;
 
-account.get('/accounts', AuthMiddleware, AccountController.list);
-account.get('/accounts/:accountId', AuthMiddleware, AccountController.byId);
-account.post('/accounts', AuthMiddleware, PermissionMiddleware(ADMINISTRATOR), AccountController.create);
-account.put('/accounts/:accountId', AuthMiddleware, PermissionMiddleware(ADMINISTRATOR), AccountController.update);
+movement.get('/movements', AuthMiddleware, MovementController.list);
+movement.get('/movements/:movementId', AuthMiddleware, MovementController.byId);
+movement.post('/movements', AuthMiddleware, PermissionMiddleware(ADMINISTRATOR), MovementController.create);
+movement.put('/movements/:movementId', AuthMiddleware, PermissionMiddleware(ADMINISTRATOR), MovementController.update);
 
-module.exports = account;
+module.exports = movement;

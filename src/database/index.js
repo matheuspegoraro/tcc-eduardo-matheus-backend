@@ -8,8 +8,8 @@ const BillType = require('../models/BillType');
 const Bill = require('../models/Bill');
 const CreditCard = require('../models/CreditCard');
 const Category = require('../models/Category');
-const AccountType = require('../models/AccountType');
-const Account = require('../models/Account');
+const MovementType = require('../models/MovementType');
+const Movement = require('../models/Movement');
 const UploadOfx = require('../models/UploadOfx');
 
 const connection = new Sequelize(dbConfig);
@@ -21,8 +21,8 @@ BillType.init(connection);
 Bill.init(connection);
 CreditCard.init(connection);
 Category.init(connection);
-AccountType.init(connection);
-Account.init(connection);
+MovementType.init(connection);
+Movement.init(connection);
 UploadOfx.init(connection);
 
 User.associate(connection.models);
@@ -32,8 +32,8 @@ BillType.associate(connection.models);
 Bill.associate(connection.models);
 CreditCard.associate(connection.models);
 Category.associate(connection.models);
-AccountType.associate(connection.models);
-Account.associate(connection.models);
+MovementType.associate(connection.models);
+Movement.associate(connection.models);
 UploadOfx.associate(connection.models);
 
 module.exports = connection;

@@ -1,19 +1,19 @@
 const { Model, DataTypes } = require('sequelize');
 
-class AccountType extends Model {
+class MovementType extends Model {
   static init(sequelize) {
     super.init({
       name: DataTypes.STRING,
       icon: DataTypes.STRING,
     }, {
-      tableName: 'accountTypes',
+      tableName: 'movementTypes',
       sequelize
     })
   };
 
   static associate(models) {
-    this.hasMany(models.Account, { foreignKey: 'accountTypeId', as: 'accountTypes' });
+    this.hasMany(models.Movement, { foreignKey: 'movementTypeId', as: 'movementTypes' });
   }
 }
 
-module.exports = AccountType;
+module.exports = MovementType;

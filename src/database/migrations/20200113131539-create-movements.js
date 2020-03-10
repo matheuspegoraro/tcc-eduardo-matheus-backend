@@ -2,7 +2,7 @@
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('accounts', { 
+    return queryInterface.createTable('movements', { 
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
@@ -23,10 +23,10 @@ module.exports = {
         onUpdate: 'RESTRICT',
         onDelete: 'RESTRICT',
       },
-      accountTypeId: {
+      movementTypeId: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        references: { model: 'accountTypes', key: 'id' },
+        references: { model: 'movementTypes', key: 'id' },
         onUpdate: 'RESTRICT',
         onDelete: 'RESTRICT',
       },
@@ -67,6 +67,6 @@ module.exports = {
   },
 
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('accounts');
+    return queryInterface.dropTable('movements');
   }
 };

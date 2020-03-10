@@ -13,7 +13,7 @@ class Category extends Model {
 
   static associate(models){
     this.belongsTo(models.Company, { foreignKey: 'companyId', as: 'company' });
-    this.hasMany(models.Account, { foreignKey: 'categoryId', as: 'accounts' });
+    this.hasMany(models.Movement, { foreignKey: 'categoryId', as: 'movements' });
     
     //Relacionamento com ela mesma
     this.belongsTo(models.Category, { 
