@@ -14,7 +14,7 @@ class UploadOfx extends Model {
     };
 
     static associate(models) {
-        this.belongsTo(models.Bank, { foreignKey: 'bankId', as: 'bank' });
+        this.belongsTo(models.Bill, { foreignKey: 'billId', as: 'bill' });
         this.belongsTo(models.Company, { foreignKey: 'companyId', as: 'company' });
     };
 
