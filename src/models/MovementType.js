@@ -3,8 +3,7 @@ const { Model, DataTypes } = require('sequelize');
 class MovementType extends Model {
   static init(sequelize) {
     super.init({
-      name: DataTypes.STRING,
-      icon: DataTypes.STRING,
+      name: DataTypes.STRING
     }, {
       tableName: 'movementTypes',
       sequelize

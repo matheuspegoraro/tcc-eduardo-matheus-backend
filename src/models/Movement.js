@@ -6,7 +6,8 @@ class Movement extends Model {
       name: DataTypes.STRING,
       value: DataTypes.REAL,
       date: DataTypes.DATE,
-      done: DataTypes.BOOLEAN
+      done: DataTypes.BOOLEAN,
+      dischargeDate: DataTypes.DATE,
     }, {
       tableName: 'movements',
       sequelize
