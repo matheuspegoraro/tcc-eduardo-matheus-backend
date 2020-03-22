@@ -74,10 +74,20 @@ module.exports = {
       name,
       value,
       date,
-      done
+      done,
+      dischargeDate
     } = req.body;
 
     try {
+      if (done) {
+        if (!dischargeDate)
+          return res.status(httpStatus.BAD_REQUEST).json({
+            error: "Data do pagamento é obrigatório!"
+          });
+
+        Bill.decrement({ currentValue: value }, { where: { id: billId } });
+      }
+
       const movement = await Movement.create({
         companyId,
         billId,
@@ -86,7 +96,8 @@ module.exports = {
         name,
         value,
         date,
-        done
+        done,
+        dischargeDate
       });
 
       return res.status(httpStatus.OK).json(movement);
