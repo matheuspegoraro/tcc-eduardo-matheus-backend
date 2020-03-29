@@ -17,6 +17,7 @@ class Movement extends Model {
   static associate(models){
     this.belongsTo(models.Company, { foreignKey: 'companyId', as: 'company' });
     this.belongsTo(models.Bill, { foreignKey: 'billId', as: 'bill' });
+    this.belongsTo(models.Bill, { foreignKey: 'billOutId', as: 'billOut' });
     this.belongsTo(models.MovementType, { foreignKey: 'movementTypeId', as: 'movementType' });
     this.belongsTo(models.Category, { foreignKey: 'categoryId', as: 'category' });
   };

@@ -2,6 +2,7 @@ const express = require('express');
 
 const ExpenseController = require('../controllers/ExpenseController');
 const RevenueController = require('../controllers/RevenueController');
+const TransfersController = require('../controllers/TransfersController');
 const AuthMiddleware = require('../middlewares/auth');
 
 const movement = express.Router();
@@ -25,5 +26,9 @@ movement.post('/movements/revenues/make-receipt', AuthMiddleware, RevenueControl
 movement.put('/movements/revenues/undo-receipt/:movementId', AuthMiddleware, RevenueController.undoReceipt);
 
 //TRANSFERS
+movement.get('/movements/transfers', AuthMiddleware, TransfersController.list);
+movement.get('/movements/transfers/:movementId', AuthMiddleware, TransfersController.byId);
+movement.post('/movements/transfers', AuthMiddleware, TransfersController.create);
+movement.delete('/movements/transfers/:movementId', AuthMiddleware, TransfersController.delete);
 
 module.exports = movement;
