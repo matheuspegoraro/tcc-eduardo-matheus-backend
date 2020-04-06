@@ -21,7 +21,12 @@ module.exports = {
         return res.status(httpStatus.UNAUTHORIZED).json({ error: 'Credênciais incorretas!' });
 
       //generate token JWT for authenticate
-      const token = jwt.sign({ id: user.id, companyId: user.companyId, type: user.type }, authConfig.secret, {
+      const token = jwt.sign({ 
+        id: user.id, 
+        companyId: user.companyId, 
+        type: user.type,
+        name: user.name
+      }, authConfig.secret, {
         expiresIn: 86400, //expires in one day (in seconds).
       });
 
