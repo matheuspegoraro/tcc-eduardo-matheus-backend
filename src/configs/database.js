@@ -1,3 +1,10 @@
+const { Op } = require('sequelize');
+
+const operatorsAliases = {
+  $gt: Op.gt,
+  $eq: Op.eq,
+}
+
 module.exports = {
   dialect: 'postgres',
   host: 'localhost',
@@ -8,4 +15,5 @@ module.exports = {
     timestamps: true,
     freezeTableName: true
   },
+  operatorsAliases
 }; 

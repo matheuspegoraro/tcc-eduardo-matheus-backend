@@ -1,4 +1,5 @@
 const User = require('../models/User');
+const Company = require('../models/Company');
 const httpStatus = require('http-status');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
@@ -12,7 +13,15 @@ module.exports = {
     const { email, password } = req.body;
 
     try {
-      const user = await User.findOne({ where: { email } });
+      const user = await User.findOne({
+        attributes: ['id', 'name', 'password', 'type'],
+        include: [{
+          model: Company,
+          as: 'company',
+          attributes: ['id', 'name', 'type']
+        }], 
+        where: { email } 
+      });
 
       if (!user)
         return res.status(httpStatus.BAD_REQUEST).json({ error: 'Credênciais incorretas!' });
@@ -23,8 +32,8 @@ module.exports = {
       //generate token JWT for authenticate
       const token = jwt.sign({ 
         id: user.id, 
-        companyId: user.companyId, 
-        type: user.type,
+        companyId: user.company.dataValues.id, 
+        type: user.company.dataValues.type,
         name: user.name
       }, authConfig.secret, {
         expiresIn: 86400, //expires in one day (in seconds).

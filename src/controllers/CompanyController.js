@@ -1,5 +1,5 @@
 const Company = require('../models/Company');
-const httpStatus = require('http-status');
+const httpStatus = require('http-status');  
 
 module.exports = {
   async list(req, res) {
@@ -9,16 +9,24 @@ module.exports = {
           'id',
           'name',
         ],
+        // where: {
+        //   'id': {
+        //     $gt: 0
+        //   }
+        // }
       });
 
       return res.status(httpStatus.OK).json(companies);
     } catch (error) {
+      console.log(error);
       return res.status(httpStatus.BAD_REQUEST).json({ error: 'Problems requesting route!' });
     }
   }, 
 
   async create(req, res) {
-    const { name } = req.body;
+    const { name, type } = req.body;
+    
+    console.log(type);
 
     try {
       const companyFind = await Company.findOne({ where: { name } });
@@ -27,7 +35,7 @@ module.exports = {
         return res.status(httpStatus.BAD_REQUEST).json({ error: 'Company already exists!' });
       }
 
-      const company = await Company.create({ name });
+      const company = await Company.create({ name, type });
 
       return res.status(httpStatus.OK).json(company);
     } catch (error) {

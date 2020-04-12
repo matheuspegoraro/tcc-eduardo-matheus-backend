@@ -27,8 +27,6 @@ module.exports = (req, res, next) => {
         req.companyId = decoded.companyId;
         req.type      = decoded.type;
 
-        console.log('req.userId: ' + req.userId);
-
         return next();
     });
 };
