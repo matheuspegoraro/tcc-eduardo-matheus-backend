@@ -57,7 +57,6 @@ module.exports = {
 
       return res.status(httpStatus.OK).json(bank);
     } catch (error) {
-      console.log(error);
       return res
         .status(httpStatus.BAD_REQUEST)
         .json({ error: "Erro cadastrar banco! Por favor, tente mais tarde." });

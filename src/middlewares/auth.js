@@ -6,8 +6,6 @@ const authConfig = require('../configs/auth');
 module.exports = (req, res, next) => {
     const authHeader = req.headers.authorization;
 
-    console.log(req.headers);
-
     if (!authHeader)
         return res.status(httpStatus.UNAUTHORIZED).json({ error: 'No token provided!' });
     

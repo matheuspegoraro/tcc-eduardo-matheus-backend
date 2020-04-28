@@ -21,7 +21,6 @@ module.exports = {
 
       return res.status(httpStatus.OK).json(advisories);
     } catch (error) {
-      console.log(error);
       return res.status(httpStatus.BAD_REQUEST).json({ error: 'Problemas ao requisitar relacionamento de clientes!' });
     }
   }, 

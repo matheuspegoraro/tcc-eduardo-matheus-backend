@@ -74,7 +74,6 @@ module.exports = {
           token: tokenForResetPass
         }
       }, (err) => {
-        console.log(err);
         if (err)
           return res.status(httpStatus.BAD_REQUEST).json({ error: 'Erro ao enviar o e-mail de recuperação! Por favor, tente mais tarde.' });
 

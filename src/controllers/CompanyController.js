@@ -18,15 +18,12 @@ module.exports = {
 
       return res.status(httpStatus.OK).json(companies);
     } catch (error) {
-      console.log(error);
       return res.status(httpStatus.BAD_REQUEST).json({ error: 'Problems requesting route!' });
     }
   }, 
 
   async create(req, res) {
     const { name, type } = req.body;
-    
-    console.log(type);
 
     try {
       const companyFind = await Company.findOne({ where: { name } });
@@ -39,7 +36,6 @@ module.exports = {
 
       return res.status(httpStatus.OK).json(company);
     } catch (error) {
-      console.log(error);
       return res.status(httpStatus.BAD_REQUEST).json({ error: 'Problems requesting route!' });
     }
   }, 

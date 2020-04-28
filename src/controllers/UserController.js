@@ -42,7 +42,6 @@ module.exports = {
 
       return res.status(httpStatus.OK).json({ user, token });
     } catch (error) {
-      console.log(error);
       return res.status(httpStatus.BAD_REQUEST).json({ error: 'Problems requesting route!' });
     }
   }, 

@@ -27,13 +27,10 @@ module.exports = {
                 
                 return res.json({ 'file': ofx, 'transactions': transactions });
             }).catch( (error) => {
-                console.log(error);
-
                 return res.status(httpStatus.BAD_REQUEST).json({ error: 'An error has occurred, check your OFX file!' });
             });
 
         } catch (error) {
-            console.log(error);
             return res.status(httpStatus.BAD_REQUEST).json({ error: 'Problems requesting route!' });
         }
     },
