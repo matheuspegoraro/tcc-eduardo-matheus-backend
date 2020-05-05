@@ -2,6 +2,8 @@ const connection = require('../../database');
 const httpStatus = require('http-status');  
 const moment = require('moment');
 
+moment.locale('pt-BR');
+
 module.exports = {
   async financialData(req, res) {
     const { type } = req.params;
@@ -13,6 +15,7 @@ module.exports = {
           from movements 
           where
           "movementTypeId" = ${type} and 
+          "done" is true and 
           date_part('year', "dischargeDate"::timestamp) = ${moment().year()} and
           date_part('month', "dischargeDate"::timestamp) = num 
           group by date_part('month', "dischargeDate"::timestamp)), 0) val
@@ -30,14 +33,13 @@ module.exports = {
       return res.status(httpStatus.BAD_REQUEST).json({ error: 'Problems requesting route!' });
     }
   }, 
-  async monthlyIncrease(req, res) {
-    const tempDate = moment();
-    
-    const month = tempDate.month();
-    const year = tempDate.year();
 
-    const previousMonth = tempDate.month(tempDate.month() - 1).month();
-    const previousYear = tempDate.month(tempDate.month() - 1).year();
+  async currentLiquidity(req, res) {
+    const currentDate = moment();
+    const previousDate = moment().add('months', -1);
+
+    const sCurrentDate = currentDate.endOf('month').format('YYYY-MM-DD');
+    const sPreviousDate = previousDate.endOf('month').format('YYYY-MM-DD');
 
     try {
       connection.query(`
@@ -45,41 +47,95 @@ module.exports = {
           select SUM(value) val
           from movements 
           where
-          date_part('month', "dischargeDate"::timestamp) = ${month} and
-          date_part('year', "dischargeDate"::timestamp) = ${year}  and
+          "dischargeDate" < '${sCurrentDate}' and
+          "done" is true and 
           "movementTypeId" = 2
         ), 0) - coalesce((
           select SUM(value) val
           from movements 
           where
-          date_part('month', "dischargeDate"::timestamp) = ${month} and
-          date_part('year', "dischargeDate"::timestamp) = ${year}  and
+          "dischargeDate" < '${sCurrentDate}' and
+          "done" is true and 
           "movementTypeId" = 1
-        ), 0)) balancesheet
-        UNION
+        ), 0)) currentliquidity
+        UNION ALL
         select (coalesce((
           select SUM(value) val
           from movements 
           where
-          date_part('month', "dischargeDate"::timestamp) = ${previousMonth} and
-          date_part('year', "dischargeDate"::timestamp) = ${previousYear}  and
+          "dischargeDate" < '${sPreviousDate}' and
+          "done" is true and 
           "movementTypeId" = 2
         ), 0) - coalesce((
           select SUM(value) val
           from movements 
           where
-          date_part('month', "dischargeDate"::timestamp) = ${previousMonth} and
-          date_part('year', "dischargeDate"::timestamp) = ${previousYear}  and
+          "dischargeDate" < '${sPreviousDate}' and
+          "done" is true and 
           "movementTypeId" = 1
-        ), 0)) balancesheet;
+        ), 0)) currentliquidity;
       `).spread(function(results, metadata) {
-
-        const previousMonth = results[1].balancesheet;
-        const currentMonth = results[0].balancesheet;
+        const previousMonth = results[1].currentliquidity;
+        const currentMonth = results[0].currentliquidity;
 
         return res.status(httpStatus.OK).json({
-          'percentbalancesheet': (currentMonth/previousMonth*100),
-          'balancesheet': (currentMonth + previousMonth)
+          'percentcurrentliquidity': (previousMonth/currentMonth*100),
+          'currentliquidity': currentMonth
+        });
+      });
+    } catch (error) {
+      console.log(error);
+      return res.status(httpStatus.BAD_REQUEST).json({ error: 'Problems requesting route!' });
+    }
+  }, 
+
+  async projectedLiquidity(req, res) {
+
+    const currentDate = moment();
+    const previousDate = moment().add('months', -1);
+
+    const sCurrentDate = currentDate.endOf('month').format('YYYY-MM-DD');
+    const sPreviousDate = previousDate.endOf('month').format('YYYY-MM-DD');
+
+    try {
+      connection.query(`
+        select (coalesce((
+          select SUM(value) val
+          from movements 
+          where
+          "date" < '${sCurrentDate}' and
+          "movementTypeId" = 2
+        ), 0) - coalesce((
+          select SUM(value) val
+          from movements 
+          where
+          "date" < '${sCurrentDate}' and
+          "movementTypeId" = 1
+        ), 0)) projectedliquidity
+        UNION ALL
+        select (coalesce((
+          select SUM(value) val
+          from movements 
+          where
+          "date" < '${sPreviousDate}' and
+          "movementTypeId" = 2
+        ), 0) - coalesce((
+          select SUM(value) val
+          from movements 
+          where
+          "date" < '${sPreviousDate}' and
+          "movementTypeId" = 1
+        ), 0)) projectedliquidity;
+      `).spread(function(results, metadata) {
+
+        const previousMonth = results[1].projectedliquidity;
+        const currentMonth = results[0].projectedliquidity;
+        
+        console.log(previousMonth, currentMonth);
+
+        return res.status(httpStatus.OK).json({
+          'percentprojectedliquidity': (previousMonth/currentMonth*100),
+          'projectedliquidity': currentMonth
         });
       });
     } catch (error) {
