@@ -143,4 +143,28 @@ module.exports = {
       return res.status(httpStatus.BAD_REQUEST).json({ error: 'Problems requesting route!' });
     }
   }, 
+
+  async higherCategorySpending(req, res) {
+    try {
+      connection.query(`
+        select m."categoryId", c."name", c.color, SUM(m.value) as total
+        from movements m
+        inner join categories c on (m."categoryId" = c.id)
+        where
+        m."movementTypeId" = 1 and
+        m."done" = true and 
+        m."dischargeDate" is not null
+        group by m."categoryId", c.name, c.color 
+        order by total desc
+        limit 5;
+      `).spread(function(results, metadata) {
+        return res.status(httpStatus.OK).json({
+          'higherCategorySpending': results
+        });
+      });
+    } catch (error) {
+      console.log(error);
+      return res.status(httpStatus.BAD_REQUEST).json({ error: 'Problems requesting route!' });
+    }
+  }, 
 };
