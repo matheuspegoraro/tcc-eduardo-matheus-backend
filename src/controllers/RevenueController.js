@@ -173,7 +173,7 @@ module.exports = {
           {
             model: MovementType,
             as: "movementType",
-            attributes: ["id", "name", "icon"]
+            attributes: ["id", "name"]
           },
           {
             model: Category,
