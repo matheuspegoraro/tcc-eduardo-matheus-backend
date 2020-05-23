@@ -24,7 +24,7 @@ module.exports = {
 
   async create(req, res) {
     const { name, type } = req.body;
-
+    
     try {
       const companyFind = await Company.findOne({ where: { name } });
 

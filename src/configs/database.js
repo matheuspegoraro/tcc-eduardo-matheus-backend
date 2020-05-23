@@ -7,10 +7,10 @@ const operatorsAliases = {
 
 module.exports = {
   dialect: 'postgres',
-  host: 'localhost',
-  username: 'postgres',
-  password: 'admin',
-  database: 'dbadministrai',
+  host: 'tuffi.db.elephantsql.com',
+  username: 'scbcoxbm',
+  password: 'YZoGDj2roAmEdBw57o6z1IHVYUhvgoon',
+  database: 'scbcoxbm',
   define: {
     timestamps: true,
     freezeTableName: true

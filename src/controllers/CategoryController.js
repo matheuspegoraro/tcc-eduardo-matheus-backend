@@ -63,7 +63,7 @@ module.exports = {
       const category = await Category.findByPk(categoryId);
 
       if (!category) 
-        return res.status(httpStatus.BAD_REQUEST).json({ error: 'Erro ao tentar buscar categoria! Categoria não existente na base de dados.' });
+        return res.status(httpStatus.BAD_REQUEST).json({ error: 'Erro ao tentar buscar categoria! Categoria nï¿½o existente na base de dados.' });
 
       return res.json(category);
     } catch (error) {
@@ -87,7 +87,7 @@ module.exports = {
           res.status(httpStatus.OK).json(category);
         })
       } else {
-        return res.status(httpStatus.BAD_REQUEST).json({ error: 'Erro ao tentar alterar a categoria! Categoria não existente na base de dados.' });
+        return res.status(httpStatus.BAD_REQUEST).json({ error: 'Erro ao tentar alterar a categoria! Categoria nÃ£o existente na base de dados.' });
       }
     } catch (error) {
       return res.status(httpStatus.BAD_REQUEST).json({ error: 'Erro ao tentar alterar a categoria! Por favor, tente mais tarde.' });
@@ -106,7 +106,7 @@ module.exports = {
             res.status(httpStatus.OK).json(category);
           })
       } else {
-        return res.status(httpStatus.BAD_REQUEST).json({ error: 'Erro ao tentar remover a categoria! Categoria não existente na base de dados.' });
+        return res.status(httpStatus.BAD_REQUEST).json({ error: 'Erro ao tentar remover a categoria! Categoria nï¿½o existente na base de dados.' });
       }
     } catch (error) {
       return res.status(httpStatus.BAD_REQUEST).json({ error: 'Erro ao tentar remover a categoria! Por favor, tente mais tarde.' });

@@ -14,6 +14,7 @@ module.exports = {
           select SUM(value) val
           from movements 
           where
+          "companyId" = ${req.companyId} and 
           "movementTypeId" = ${type} and 
           "done" is true and 
           date_part('year', "dischargeDate"::timestamp) = ${moment().year()} and
@@ -47,6 +48,7 @@ module.exports = {
           select SUM(value) val
           from movements 
           where
+          "companyId" = ${req.companyId} and 
           "dischargeDate" < '${sCurrentDate}' and
           "done" is true and 
           "movementTypeId" = 2
@@ -54,6 +56,7 @@ module.exports = {
           select SUM(value) val
           from movements 
           where
+          "companyId" = ${req.companyId} and 
           "dischargeDate" < '${sCurrentDate}' and
           "done" is true and 
           "movementTypeId" = 1
@@ -63,6 +66,7 @@ module.exports = {
           select SUM(value) val
           from movements 
           where
+          "companyId" = ${req.companyId} and 
           "dischargeDate" < '${sPreviousDate}' and
           "done" is true and 
           "movementTypeId" = 2
@@ -70,6 +74,7 @@ module.exports = {
           select SUM(value) val
           from movements 
           where
+          "companyId" = ${req.companyId} and 
           "dischargeDate" < '${sPreviousDate}' and
           "done" is true and 
           "movementTypeId" = 1
@@ -103,12 +108,14 @@ module.exports = {
           select SUM(value) val
           from movements 
           where
+          "companyId" = ${req.companyId} and 
           "date" < '${sCurrentDate}' and
           "movementTypeId" = 2
         ), 0) - coalesce((
           select SUM(value) val
           from movements 
           where
+          "companyId" = ${req.companyId} and 
           "date" < '${sCurrentDate}' and
           "movementTypeId" = 1
         ), 0)) projectedliquidity
@@ -117,12 +124,14 @@ module.exports = {
           select SUM(value) val
           from movements 
           where
+          "companyId" = ${req.companyId} and 
           "date" < '${sPreviousDate}' and
           "movementTypeId" = 2
         ), 0) - coalesce((
           select SUM(value) val
           from movements 
           where
+          "companyId" = ${req.companyId} and 
           "date" < '${sPreviousDate}' and
           "movementTypeId" = 1
         ), 0)) projectedliquidity;
@@ -130,8 +139,6 @@ module.exports = {
 
         const previousMonth = results[1].projectedliquidity;
         const currentMonth = results[0].projectedliquidity;
-        
-        console.log(previousMonth, currentMonth);
 
         return res.status(httpStatus.OK).json({
           'percentprojectedliquidity': (previousMonth/currentMonth*100),
@@ -151,6 +158,7 @@ module.exports = {
         from movements m
         inner join categories c on (m."categoryId" = c.id)
         where
+        m."companyId" = ${req.companyId} and 
         m."movementTypeId" = 1 and
         m."done" = true and 
         m."dischargeDate" is not null
