@@ -8,9 +8,9 @@ const operatorsAliases = {
 module.exports = {
   dialect: 'postgres',
   host: 'tuffi.db.elephantsql.com',
-  username: 'scbcoxbm',
-  password: 'YZoGDj2roAmEdBw57o6z1IHVYUhvgoon',
-  database: 'scbcoxbm',
+  username: 'ychmdtly',
+  password: '3zPo326iIrAgyYpPLKfwBQWDvvqToVEA',
+  database: 'ychmdtly',
   define: {
     timestamps: true,
     freezeTableName: true
