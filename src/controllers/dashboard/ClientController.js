@@ -49,7 +49,7 @@ module.exports = {
           from movements 
           where
           "companyId" = ${req.companyId} and 
-          "dischargeDate" < '${sCurrentDate}' and
+          "dischargeDate" <= '${sCurrentDate}' and
           "done" is true and 
           "movementTypeId" = 2
         ), 0) - coalesce((
@@ -57,7 +57,7 @@ module.exports = {
           from movements 
           where
           "companyId" = ${req.companyId} and 
-          "dischargeDate" < '${sCurrentDate}' and
+          "dischargeDate" <= '${sCurrentDate}' and
           "done" is true and 
           "movementTypeId" = 1
         ), 0)) currentliquidity
@@ -67,7 +67,7 @@ module.exports = {
           from movements 
           where
           "companyId" = ${req.companyId} and 
-          "dischargeDate" < '${sPreviousDate}' and
+          "dischargeDate" <= '${sPreviousDate}' and
           "done" is true and 
           "movementTypeId" = 2
         ), 0) - coalesce((
@@ -75,7 +75,7 @@ module.exports = {
           from movements 
           where
           "companyId" = ${req.companyId} and 
-          "dischargeDate" < '${sPreviousDate}' and
+          "dischargeDate" <= '${sPreviousDate}' and
           "done" is true and 
           "movementTypeId" = 1
         ), 0)) currentliquidity;
@@ -109,14 +109,14 @@ module.exports = {
           from movements 
           where
           "companyId" = ${req.companyId} and 
-          "date" < '${sCurrentDate}' and
+          "date" <= '${sCurrentDate}' and
           "movementTypeId" = 2
         ), 0) - coalesce((
           select SUM(value) val
           from movements 
           where
           "companyId" = ${req.companyId} and 
-          "date" < '${sCurrentDate}' and
+          "date" <= '${sCurrentDate}' and
           "movementTypeId" = 1
         ), 0)) projectedliquidity
         UNION ALL
@@ -125,14 +125,14 @@ module.exports = {
           from movements 
           where
           "companyId" = ${req.companyId} and 
-          "date" < '${sPreviousDate}' and
+          "date" <= '${sPreviousDate}' and
           "movementTypeId" = 2
         ), 0) - coalesce((
           select SUM(value) val
           from movements 
           where
           "companyId" = ${req.companyId} and 
-          "date" < '${sPreviousDate}' and
+          "date" <= '${sPreviousDate}' and
           "movementTypeId" = 1
         ), 0)) projectedliquidity;
       `).spread(function(results, metadata) {
