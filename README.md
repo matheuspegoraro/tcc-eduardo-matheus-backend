@@ -10,7 +10,7 @@ Esse projeto foi desenvolvido com as seguintes tecnologias:
 
 ## 💻 Instalação
 
-Para instalação do backend faça os seguintes comandos:
+Para instalação do backend execute os seguintes comandos:
 ```bash
       $ git clone https://github.com/matheuspegoraro/tcc-eduardo-matheus-backend.git
       $ cd ./tcc-eduardo-matheus-backend
