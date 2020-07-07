@@ -13,7 +13,6 @@ class Bank extends Model {
 
   static associate(models) {
     this.hasMany(models.Bill, { foreignKey: 'bankId', as: 'bills' });
-    this.hasMany(models.CreditCard, { foreignKey: 'bankId', as: 'creditCards' });
     this.belongsTo(models.Company, { foreignKey: 'companyId', as: 'company' });
   }
 }
