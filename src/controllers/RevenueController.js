@@ -88,6 +88,8 @@ module.exports = {
         Bill.increment({ currentValue: value }, { where: { id: billId } });
       }
 
+      console.log("AQUI:" + date);
+
       const movement = await Movement.create({
         companyId,
         billId,
