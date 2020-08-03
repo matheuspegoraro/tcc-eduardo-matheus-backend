@@ -44,7 +44,7 @@ module.exports = {
         transactions.map(async transaction => {
             
             const movementTypeId = (transaction.TRNTYPE == 'CREDIT' ? 2 : transaction.TRNTYPE == 'DEBIT' ? 1 : 3);
-            const categoryId = 1;
+            const categoryId = transaction.CATEGORY;
             const name = transaction.MEMO;
             const value = parseFloat(transaction.TRNAMT.split(',').join('.'));
             const date = `${transaction.DTPOSTED.substring(0, 4)}-${transaction.DTPOSTED.substring(4, 6)}-${transaction.DTPOSTED.substring(6, 8)}`;
