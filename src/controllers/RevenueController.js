@@ -14,7 +14,17 @@ const REVENUES = 2;
 
 module.exports = {
   async list(req, res) {
+
+    let idFinal;
+
     const { companyId } = req;
+    const { clientCompanyId} = req.params;
+
+    idFinal = companyId;
+
+    if (clientCompanyId) {
+      idFinal = clientCompanyId;
+    }
 
     try {
       const movements = await Movement.findAll({
@@ -51,7 +61,7 @@ module.exports = {
           }
         ],
         where: {
-          companyId,
+          companyId: idFinal,
           movementTypeId: REVENUES
         },
         order: [["date", "DESC"]]
