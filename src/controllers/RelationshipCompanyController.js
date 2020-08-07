@@ -25,6 +25,32 @@ module.exports = {
     }
   }, 
 
+  //Retorna os clientes que a empresa (consultores) atende
+  async byCompanyId(req, res) {
+    const { companyId } = req;
+
+    try {
+      const advisories = await RelationshipCompany.findAll({
+        attributes: [
+          'id',
+          'createdAt'
+        ],
+        include: [{
+          model: Company,
+          as: 'clients',
+          attributes: ['id', 'name']
+        }],
+        where: {
+          advisoryId: companyId
+        }
+      });
+
+      return res.status(httpStatus.OK).json(advisories);
+    } catch (error) {
+      return res.status(httpStatus.BAD_REQUEST).json({ error: 'Problemas ao requisitar relacionamento de empresas!' });
+    }
+  }, 
+
   async create(req, res) {
     const { clientId, advisoryId } = req.body;
 

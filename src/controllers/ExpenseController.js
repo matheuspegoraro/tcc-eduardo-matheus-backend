@@ -16,11 +16,22 @@ const EXPENSES = 1;
 
 module.exports = {
   async list(req, res) {
+   
+    let idFinal;
+
     const { companyId } = req;
     const { month, year } = req.query;
 
     if (month === 0 || year === 0) {
       return res.status(httpStatus.OK).json([]);
+    }
+
+    const { clientCompanyId } = req.params;
+
+    idFinal = companyId;
+
+    if (clientCompanyId) {
+      idFinal = clientCompanyId;
     }
 
     try {
@@ -58,7 +69,7 @@ module.exports = {
           }
         ],
         where: {
-          companyId,
+          companyId: idFinal,
           movementTypeId: EXPENSES,
           date: {
             $gte: moment(`${month}-01-${year}`, 'MM-DD-YYYY').toDate(),
