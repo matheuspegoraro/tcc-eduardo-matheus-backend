@@ -5,6 +5,8 @@ const MovementType = require("../models/MovementType");
 const Category = require("../models/Category");
 const httpStatus = require("http-status");
 
+const moment = require('moment');
+
 //MOVEMENTS TYPES:
 //1 - PAGAMENTOS;
 //2 - RECEBIMENTOS;
@@ -15,6 +17,11 @@ const REVENUES = 2;
 module.exports = {
   async list(req, res) {
     const { companyId } = req;
+    const { month, year } = req.query;
+
+    if (month === 0 || year === 0) {
+      return res.status(httpStatus.OK).json([]);
+    } 
 
     try {
       const movements = await Movement.findAll({
@@ -52,7 +59,11 @@ module.exports = {
         ],
         where: {
           companyId,
-          movementTypeId: REVENUES
+          movementTypeId: REVENUES,
+          date: {
+            $gte: moment(`${month}-01-${year}`, 'MM-DD-YYYY').toDate(),
+            $lt: moment(`${month}-01-${year}`, 'MM-DD-YYYY').endOf('month')
+          }
         },
         order: [["date", "DESC"]]
       });

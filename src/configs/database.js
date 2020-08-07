@@ -3,6 +3,8 @@ const { Op } = require('sequelize');
 const operatorsAliases = {
   $gt: Op.gt,
   $eq: Op.eq,
+  $gte: Op.gte,
+  $lt: Op.lt
 }
 
 module.exports = {
