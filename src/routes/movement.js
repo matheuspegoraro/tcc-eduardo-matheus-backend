@@ -3,6 +3,7 @@ const express = require('express');
 const ExpenseController = require('../controllers/ExpenseController');
 const RevenueController = require('../controllers/RevenueController');
 const TransfersController = require('../controllers/TransfersController');
+const CashFlowController = require('../controllers/CashFlowController');
 const AuthMiddleware = require('../middlewares/auth');
 
 const movement = express.Router();
@@ -30,5 +31,7 @@ movement.get('/movements/transfers', AuthMiddleware, TransfersController.list);
 movement.get('/movements/transfers/:movementId', AuthMiddleware, TransfersController.byId);
 movement.post('/movements/transfers', AuthMiddleware, TransfersController.create);
 movement.delete('/movements/transfers/:movementId', AuthMiddleware, TransfersController.delete);
+
+movement.get('/movements/cash-flow', AuthMiddleware, CashFlowController.list);
 
 module.exports = movement;

@@ -4,6 +4,7 @@ const RelationshipCompanyController = require('../controllers/RelationshipCompan
 const RevenueController = require('../controllers/RevenueController');
 const ExpenseController = require('../controllers/ExpenseController');
 const TransfersController = require('../controllers/TransfersController');
+const CashFlowController = require('../controllers/CashFlowController');
 
 const AuthMiddleware = require('../middlewares/auth');
 
@@ -17,5 +18,6 @@ company.delete('/relationship-company/:relationshipId', AuthMiddleware, Relation
 company.get('/relationship-company/revenues/:clientCompanyId', AuthMiddleware, RevenueController.list);
 company.get('/relationship-company/expenses/:clientCompanyId', AuthMiddleware, ExpenseController.list);
 company.get('/relationship-company/transfers/:clientCompanyId', AuthMiddleware, TransfersController.list);
+company.get('/relationship-company/cash-flow/:clientCompanyId', AuthMiddleware, CashFlowController.list);
 
 module.exports = company;
