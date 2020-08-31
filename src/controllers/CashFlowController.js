@@ -15,11 +15,10 @@ module.exports = {
     const { companyId } = req;
     const { month, year } = req.query;
 
-    console.log(month, year)
-
-    if (month === 0 || year === 0) {
+    if (parseInt(month) === 0 || parseInt(year) === 0) {
       return res.status(httpStatus.OK).json([]);
     } 
+    
     const { clientCompanyId} = req.params;
 
     idFinal = companyId;

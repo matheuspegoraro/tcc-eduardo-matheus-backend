@@ -3,6 +3,8 @@ const Bill = require("../models/Bill");
 const Category = require("../models/Category");
 const httpStatus = require("http-status");
 
+const moment = require('moment');
+
 //MOVEMENTS TYPES:
 //1 - PAGAMENTOS;
 //2 - RECEBIMENTOS;
@@ -16,7 +18,13 @@ module.exports = {
     let idFinal;
 
     const { companyId } = req;
-    const { clientCompanyId} = req.params;
+    const { month, year } = req.query;
+
+    if (parseInt(month) === 0 || parseInt(year) === 0) {
+      return res.status(httpStatus.OK).json([]);
+    } 
+
+    const { clientCompanyId } = req.params;
 
     idFinal = companyId;
 
@@ -53,13 +61,18 @@ module.exports = {
         ],
         where: {
           companyId: idFinal,
-          movementTypeId: TRANSFERS
+          movementTypeId: TRANSFERS,
+          date: {
+            $gte: moment(`${month}-01-${year}`, 'MM-DD-YYYY').toDate(),
+            $lt: moment(`${month}-01-${year}`, 'MM-DD-YYYY').endOf('month')
+          }
         },
         order: [["date", "DESC"]]
       });
 
       return res.status(httpStatus.OK).json(movements);
     } catch (error) {
+      console.log(error);
       return res.status(httpStatus.BAD_REQUEST).json({
         error:
           "Problema ao listar as transferências! Por favor, tente mais tarde."
