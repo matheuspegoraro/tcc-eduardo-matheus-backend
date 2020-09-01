@@ -7,6 +7,15 @@ moment.locale('pt-BR');
 module.exports = {
   async financialData(req, res) {
     const { type } = req.params;
+
+    const { companyId } = req;
+    const { clientCompanyId } = req.params;
+    
+    let idFinal = companyId;
+
+    if (clientCompanyId) {
+      idFinal = clientCompanyId;
+    }
     
     try {
       connection.query(`
@@ -14,7 +23,7 @@ module.exports = {
           select SUM(value) val
           from movements 
           where
-          "companyId" = ${req.companyId} and 
+          "companyId" = ${idFinal} and 
           "movementTypeId" = ${type} and 
           "done" is true and 
           date_part('year', "dischargeDate"::timestamp) = ${moment().year()} and
@@ -42,13 +51,22 @@ module.exports = {
     const sCurrentDate = currentDate.endOf('month').format('YYYY-MM-DD');
     const sPreviousDate = previousDate.endOf('month').format('YYYY-MM-DD');
 
+    const { companyId } = req;
+    const { clientCompanyId } = req.params;
+    
+    let idFinal = companyId;
+
+    if (clientCompanyId) {
+      idFinal = clientCompanyId;
+    }
+
     try {
       connection.query(`
         select (coalesce((
           select SUM(value) val
           from movements 
           where
-          "companyId" = ${req.companyId} and 
+          "companyId" = ${idFinal} and 
           "dischargeDate" <= '${sCurrentDate}' and
           "done" is true and 
           "movementTypeId" = 2
@@ -56,7 +74,7 @@ module.exports = {
           select SUM(value) val
           from movements 
           where
-          "companyId" = ${req.companyId} and 
+          "companyId" = ${idFinal} and 
           "dischargeDate" <= '${sCurrentDate}' and
           "done" is true and 
           "movementTypeId" = 1
@@ -66,7 +84,7 @@ module.exports = {
           select SUM(value) val
           from movements 
           where
-          "companyId" = ${req.companyId} and 
+          "companyId" = ${idFinal} and 
           "dischargeDate" <= '${sPreviousDate}' and
           "done" is true and 
           "movementTypeId" = 2
@@ -74,7 +92,7 @@ module.exports = {
           select SUM(value) val
           from movements 
           where
-          "companyId" = ${req.companyId} and 
+          "companyId" = ${idFinal} and 
           "dischargeDate" <= '${sPreviousDate}' and
           "done" is true and 
           "movementTypeId" = 1
@@ -102,20 +120,29 @@ module.exports = {
     const sCurrentDate = currentDate.endOf('month').format('YYYY-MM-DD');
     const sPreviousDate = previousDate.endOf('month').format('YYYY-MM-DD');
 
+    const { companyId } = req;
+    const { clientCompanyId } = req.params;
+    
+    let idFinal = companyId;
+
+    if (clientCompanyId) {
+      idFinal = clientCompanyId;
+    }
+
     try {
       connection.query(`
         select (coalesce((
           select SUM(value) val
           from movements 
           where
-          "companyId" = ${req.companyId} and 
+          "companyId" = ${idFinal} and 
           "date" <= '${sCurrentDate}' and
           "movementTypeId" = 2
         ), 0) - coalesce((
           select SUM(value) val
           from movements 
           where
-          "companyId" = ${req.companyId} and 
+          "companyId" = ${idFinal} and 
           "date" <= '${sCurrentDate}' and
           "movementTypeId" = 1
         ), 0)) projectedliquidity
@@ -124,14 +151,14 @@ module.exports = {
           select SUM(value) val
           from movements 
           where
-          "companyId" = ${req.companyId} and 
+          "companyId" = ${idFinal} and 
           "date" <= '${sPreviousDate}' and
           "movementTypeId" = 2
         ), 0) - coalesce((
           select SUM(value) val
           from movements 
           where
-          "companyId" = ${req.companyId} and 
+          "companyId" = ${idFinal} and 
           "date" <= '${sPreviousDate}' and
           "movementTypeId" = 1
         ), 0)) projectedliquidity;
@@ -152,13 +179,23 @@ module.exports = {
   }, 
 
   async higherCategorySpending(req, res) {
+    
+    const { companyId } = req;
+    const { clientCompanyId } = req.params;
+    
+    let idFinal = companyId;
+
+    if (clientCompanyId) {
+      idFinal = clientCompanyId;
+    }
+
     try {
       connection.query(`
         select m."categoryId", c."name", c.color, SUM(m.value) as total
         from movements m
         inner join categories c on (m."categoryId" = c.id)
         where
-        m."companyId" = ${req.companyId} and 
+        m."companyId" = ${idFinal} and 
         m."movementTypeId" = 1 and
         m."done" = true and 
         m."dischargeDate" is not null
