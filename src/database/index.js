@@ -11,6 +11,7 @@ const MovementType = require('../models/MovementType');
 const Movement = require('../models/Movement');
 const UploadOfx = require('../models/UploadOfx');
 const RelationshipCompany = require('../models/RelationshipCompany');
+const Message = require('../models/Message');
 
 const connection = new Sequelize(dbConfig);
 
@@ -24,6 +25,7 @@ MovementType.init(connection);
 Movement.init(connection);
 UploadOfx.init(connection);
 RelationshipCompany.init(connection);
+Message.init(connection);
 
 User.associate(connection.models);
 Company.associate(connection.models);
@@ -35,5 +37,6 @@ MovementType.associate(connection.models);
 Movement.associate(connection.models);
 UploadOfx.associate(connection.models);
 RelationshipCompany.associate(connection.models);
+Message.associate(connection.models);
 
 module.exports = connection;
